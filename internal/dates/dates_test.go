@@ -21,6 +21,8 @@ func TestParse(t *testing.T) {
 		{"friday", "2026-03-06"},
 		{"mon", "2026-03-09"},
 		{"sun", "2026-03-08"},
+		{"tue", "2026-03-10"},
+		{"tuesday", "2026-03-10"},
 		{"eow", "2026-03-08"},
 		{"eom", "2026-03-31"},
 		{"2026-12-25", "2026-12-25"},
@@ -45,6 +47,16 @@ func TestParseErrors(t *testing.T) {
 		if _, err := Parse(in, now); err == nil {
 			t.Errorf("Parse(%q): expected error", in)
 		}
+	}
+}
+
+func TestWeekdayIsNeverToday(t *testing.T) {
+	got, err := Parse("tue", now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := "2026-03-10"; got.Format(Layout) != want {
+		t.Fatalf("Parse(tue) on a Tuesday = %s, want %s", got.Format(Layout), want)
 	}
 }
 
