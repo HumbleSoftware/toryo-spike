@@ -60,6 +60,9 @@ func Parse(s string, now time.Time) (time.Time, error) {
 
 	if wd, ok := weekdays[s]; ok {
 		delta := (int(wd) - int(today.Weekday()) + 7) % 7
+		if delta == 0 {
+			delta = 7
+		}
 		return today.AddDate(0, 0, delta), nil
 	}
 
